@@ -1,11 +1,12 @@
-# -record-
+# Informal record of every step towards dream XD
 I am a small transparency
 
 start! 
-2019-4-13 
-informal record of every step towards dream XD
 
-indluding:
+2019-4-13 
+
+
+Including:
 leetcode （algorithm and data structure???  maybe 
 machine learning
 deep learning
