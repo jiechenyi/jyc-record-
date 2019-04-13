@@ -7,13 +7,19 @@ start!
 
 
 Including:
+
 leetcode （algorithm and data structure???  maybe 
+
 machine learning
+
 deep learning
+
 probability and statistics
+
 paper reading
 .....
 
 &
+
 some mood trash XD
 
