@@ -5,30 +5,65 @@ You need to practice over and over again to  achieve handling the questions belo
 由中序 + 另外一种遍历方式 重建二叉树
 二叉树层序遍历 换行打印 & z字形打印
 二叉树的镜像
+判断二叉树是否为对称的
 二叉树的最大深度
 二叉搜索树的最近公共祖先
 二叉树的最近公共祖先
 
 
 DP：
-最小编辑距离
-背包问题 （0-1 背包、完全背包（物品个数不限）、多背包（物品个
-数有限个）
-给定数组不能获取相邻的两个数 ，求和最大
-最大连续子序列和（子串和），输出序列？
-乘积最大的子序列（子串）
-最常上升子序列的长度（子串）
-最长回文子序列（子串）
-最长公共子序列（子串）
-股票每天的价格，只进行一次买入卖出，求最大收益
-0-1 矩阵 求只包含1的最大正方形 
-0-1矩阵 找出每个元素到最近的0的距离
-数塔问题（三角形 从上往下的最小路径和）
+最小编辑距离   dp[i][j] = min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+1)  (word1[i] != word2[j])
+
+背包问题 （0-1 背包、完全背包（物品个数不限）、多背包（物品个数有限个）  
+                              dp[i][j] = max(dp[i-1][j],dp[i-1][j-w[i]]+c[i])(j>=w[i])
+                              dp[i][j] = max(dp[i-1][j],dp[i-1][j-k*w[i]]+k*c[i] ) for k in q[i] 
+                              dp[i][j] = max[dp[i-1][j],dp[i][j-w[i]]+c[i])
+                              
+给定数组不能获取相邻的两个数 ，求和最大  dp[i] = max(dp[i-2]+nums[i],dp[i-1])
+最大子序列和（子串和），输出序列？  子序列：dp[i] = max(dp[i-1]+arr[i],dp[i-1],arr[i])
+                                 子串：dp[i] = max(dp[i-1]+arr[i],arr[i])
+                                 
+乘积最大的子序列（子串）  mindp[i] = min(maxdp[i-1]*nums[i],mindp[i-1]*nums[i],nums[i])
+                        maxdp[i] = max(mindp[i-1]*nums[i],maxdp[i-1]*nums[i],nums[i])
+                        return max(maxdp)
+                        
+最常上升子序列的长度（子串） 子序列：
+														for i in range(1,n):
+															for j in range(i,-1,-1):
+																if nums[j]<nums[i]:
+																	dp[i] = max(dp[i],dp[j]+1)
+													子串：
+														for i in range(1,n):
+																if nums[i]>nums[i-1]:
+																		dp[i] = (dp[i-1]+1,1)
+
+                                              
+最长回文子序列（子串） 子序列：dp[i][j] = max(dp[i+1][j-1]+2,dp[i+1][j],dp[i][j-1])
+                     子串：dp[i][j] 表示 s[i:j]是不是回文 是的话就标为1 不是的话就标为0				 
+											for j in range(n): ####3这个遍历的方式很不一样！！
+												for i in range(j-1,-1,-1):
+											if j-i+1 == 2 and s[i] == s[j]:
+												dp[i][j]=1
+											if j-i+1>2:
+												if s[i]==s[j]:
+														dp[i][j] = dp[i+1][j-1]
+												else:
+														dp[i][j] = 0
+
+最长公共子序列：					 dp[i][j] = dp[i-1][j-1]+1 if word1[i]==word2[j]
+														dp[i][j] = max(dp[i-1][j],dp[i][j-1])
+股票每天的价格，只进行一次买入卖出，求最大收益   dp[i] = max(dp[i-1],prices[i]-minp)   minp 表示 前i-1天中的最小的价格
+			
+0-1 矩阵 求只包含1的最大正方形  dp[i][j] = min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])+1
+0-1矩阵 找出每个元素到最近的0的距离  
+数塔问题（三角形 从上往下的最小路径和）  dp[i][j] = min(dp[i-1][j-1],dp[i-1][j])+nums[i][j]  注意边界  也可以用自底向上法 就是遍历要反过来
 零钱兑换 （有一个目标值，一个arr ，arr里的coin可以使用任意多
-          次，求凑成目标值的方法数）
+          次，求凑成目标值的方法数）设零钱有n种，目标值为amount  dp：（n）x amount+1）
+					dp[i][j] = max(dp[i-1][j],dp[i][j-coins[i-1])  (j>=coins[i])
+					dp[i][j] = dp[i-1][j] (j<coins[i])
 
 链表：
-找到链表中环的入口  （hash表 / O(1))
+找到链表中环的入口  （hash表 / O(1)) 
 反转链表
 两个链表的第一个公共结点
 删除链表中的重复元素，使得每个元素只出现一次
