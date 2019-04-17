@@ -4,9 +4,74 @@ You need to practice over and over again to  achieve handling the questions belo
 二叉树的前序、后序、中序遍历 递归&非递归
 由中序 + 另外一种遍历方式 重建二叉树
 二叉树层序遍历 换行打印 & z字形打印
-二叉树的镜像
-判断二叉树是否为对称的
-二叉树的最大深度
+二叉树的镜像  递归&非递归
+判断二叉树是否为对称的  递归 & 非递归
+    ##### 递归 ####
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return True
+        return self.ismirror(root,root)
+    def ismirror(self,root1,root2):
+        if not root1 and not root2:
+            return True
+        if not root1 or not root2:
+            return False
+        
+        if root1.val == root2.val:
+            return self.ismirror(root1.left,root2.right) and self.ismirror(root1.right,root2.left)
+        else:
+            return False
+    ###### 非递归######
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return True
+        stack=[root,root]
+        while len(stack)>0:
+            node1 = stack.pop(0)
+            node2=stack.pop(0)
+            
+            if not node1 and not node2:
+                continue
+            if not node1 or not node2:
+                return False
+            if node1.val != node2.val:
+                return False
+            stack.append(node1.left)
+            stack.append(node2.right)
+            stack.append(node1.right)
+            stack.append(node2.left)
+        return True
+    
+二叉树的最大深度  递归 & 非递归 
+### 递归 ####
+def maxDepth(root):
+	if not root:
+		retrun 0
+	return max(maxDepth(root.left),maxDepth(root.right))+1
+#### 非递归 ###
+def maxdepth(root):
+	if not root:
+		return 0
+	stack=[]
+	stack.append([1,root])
+	res =0
+	while len(stack)>0:
+		cur,node = stack.pop()
+		if node.left:
+			stack.append([cur+1,node.left])
+		if node.right:
+			stack.append([cur+1,node.right])
+		res = max(res,cur)
+	return res
+		
 二叉搜索树的最近公共祖先
 二叉树的最近公共祖先
 
@@ -65,13 +130,66 @@ DP：
 链表：
 找到链表中环的入口  （hash表 / O(1)) 
 反转链表
+def reverse(head):
+	if not head:
+		return 
+	p = None
+	while head:
+		q = head.next
+		head.next = p
+		p = head
+		head = q
+	return p
 两个链表的第一个公共结点
 删除链表中的重复元素，使得每个元素只出现一次
+    def deleteDuplicates(head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head:
+            return 
+        p = head
+        while p:
+            if p.next:
+                if p.val == p.next.val:
+                    if p.next.next:
+                        p.next = p.next.next
+                    else:
+                        p.next = None   
+                else:
+                    p =p.next
+            else:
+                p = p.next
+        return head
+			
+			
+		
 删除重复元素，使其不出现
+def delete(head):
+	if not head:
+		return 
+	p = listNond(-99999)
+	pre = p
+	cur = head
+	flag =True
+	while cur:
+		while cur.next and cur.val == cur.next.val:
+			flag = True
+			cur= cur.next
+		if flag == True:
+			pre.next = cur.next
+		else:
+			pre = cur
+		cur = cur.next
+	return p.next
+		
 合并两个有序链表
 
-双指针：
+
+双/三指针：
 三数之和
+荷兰国旗问题
 
 排序：
 每种的最好最坏情况的复杂度（quick sort and merge sort and heap sort
