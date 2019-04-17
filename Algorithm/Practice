@@ -1,6 +1,25 @@
 You need to practice over and over again to  achieve handling the questions below just like chewing gums......
 
 二叉树：
+是否是平衡二叉树
+    def isBalanced(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        if not root:
+            return True
+        left = self.maxdepth(root.left)
+        right = self.maxdepth(root.right)
+        if abs(left-right) >1:
+            return False
+        else:
+            return True and self.isBalanced(root.left) and self.isBalanced(root.right)
+    def maxdepth(self,root):
+        if not root:
+            return 0
+        return max(self.maxdepth(root.left),self.maxdepth(root.right))+1
+	
 二叉树的前序、后序、中序遍历 递归&非递归
 由中序 + 另外一种遍历方式 重建二叉树
 二叉树层序遍历 换行打印 & z字形打印
@@ -128,6 +147,23 @@ DP：
 					dp[i][j] = dp[i-1][j] (j<coins[i])
 
 链表：
+两两交换链表中结点 
+    def swapPairs(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head or not head.next:
+            return head
+        
+        tmp = ListNode(-999)
+        tmp = head.next
+        head.next = self.swapPairs(tmp.next)
+        tmp.next = head
+        
+        return tmp
+        
+
 找到链表中环的入口  （hash表 / O(1)) 
 反转链表
 def reverse(head):
@@ -141,6 +177,7 @@ def reverse(head):
 		head = q
 	return p
 两个链表的第一个公共结点
+
 删除链表中的重复元素，使得每个元素只出现一次
     def deleteDuplicates(head):
         """
