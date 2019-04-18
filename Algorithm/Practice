@@ -80,7 +80,7 @@ def maxdepth(root):
 	if not root:
 		return 0
 	stack=[]
-	stack.append([1,root])
+	stack.append([1,root])   ### 记录层数
 	res =0
 	while len(stack)>0:
 		cur,node = stack.pop()
@@ -111,7 +111,7 @@ DP：
                         maxdp[i] = max(mindp[i-1]*nums[i],maxdp[i-1]*nums[i],nums[i])
                         return max(maxdp)
                         
-最常上升子序列的长度（子串） 子序列：
+最长上升子序列的长度（子串） 子序列：
 				for i in range(1,n):
 					for j in range(i,-1,-1):
 						if nums[j]<nums[i]:
@@ -124,7 +124,7 @@ DP：
                                               
 最长回文子序列（子串） 子序列：dp[i][j] = max(dp[i+1][j-1]+2,dp[i+1][j],dp[i][j-1])
                      子串：dp[i][j] 表示 s[i:j]是不是回文 是的话就标为1 不是的话就标为0				 
-			for j in range(n): ####3这个遍历的方式很不一样！！
+			for j in range(n): ####这个遍历的方式很不一样！！
 				for i in range(j-1,-1,-1):
 			if j-i+1 == 2 and s[i] == s[j]:
 				dp[i][j]=1
@@ -165,6 +165,25 @@ DP：
         
 
 找到链表中环的入口  （hash表 / O(1)) 
+
+    def EntryNodeOfLoop(self, pHead):
+        # write code here
+        if pHead==None or pHead.next==None or pHead.next.next==None:
+            return 
+        pre = pHead.next.next
+        cur = pHead.next
+        while pre != cur:
+            if pre.next==None or pre.next.next==None:
+                return None
+            pre = pre.next.next
+            cur = cur.next
+        pre = pHead
+        while pre!=cur:
+            pre = pre.next
+            cur = cur.next
+            
+        return cur
+    
 反转链表
 def reverse(head):
 	if not head:
@@ -222,12 +241,50 @@ def delete(head):
 	return p.next
 		
 合并两个有序链表
+#### 递归 ###  非递归的话类似于 归并排序的那部分 
+    def Merge(self, pHead1, pHead2):
+        # write code here
+        if not pHead1:
+            return pHead2
+        if not pHead2:
+            return pHead1
+        head = ListNode(0)
+        if pHead1.val<pHead2.val:
+            head = pHead1
+            head.next = self.Merge(pHead1.next,pHead2)
+        else:
+            head = pHead2
+            head.next = self.Merge(pHead1,pHead2.next)
+        return head
+链表的倒数第k个结点
 
 
 双/三指针：
 三数之和
 荷兰国旗问题
+链表的倒数第k个结点
 
 排序：
 每种的最好最坏情况的复杂度（quick sort and merge sort and heap sort
 
+栈：
+
+栈的压入、弹出序列是否合法
+    def IsPopOrder(self, pushV, popV):
+        # write code here
+        tmp=[]
+        pop = popV[:]
+        for i in pushV:
+            tmp.append(i)
+            
+            if i == pop[0]:
+                
+                while tmp[-1] == pop[0]:
+                    tmp.pop()
+                    pop.pop(0)
+                    if not tmp and not pop:
+                        return True
+        if not tmp and not pop:
+            return True
+        else:
+            return False
