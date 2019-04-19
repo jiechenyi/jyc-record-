@@ -21,6 +21,83 @@ You need to practice over and over again to  achieve handling the questions belo
         return max(self.maxdepth(root.left),self.maxdepth(root.right))+1
 	
 二叉树的前序、后序、中序遍历 递归&非递归
+前序
+    def preorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root:
+            return []
+        res=[]
+        self.help(root,res)
+        return res
+    def help(self,root,res):
+        if not root:
+            return []
+        res.append(root.val)
+        self.help(root.left,res)
+        self.help(root.right,res)
+#### 非递归 
+	def preorderTraversal(self, root):
+	"""
+	:type root: TreeNode
+	:rtype: List[int]
+	"""
+	if not root:
+		return 
+	res=[]
+	q = []
+	node = root
+	while len(q)>0 or node:
+		while node:
+			res.append(node.val)
+			q.append(node)
+			node = node.left
+		node = q.pop()
+		node = node.right            
+	return res
+**中序
+    def inorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root:
+            return 
+        res=[]
+        stack =[]
+        
+        node = root
+        while len(stack)>0 or node:            
+            while node:    
+                stack.append(node)
+                node = node.left
+               
+            node = stack.pop()
+            res.append(node.val)
+            node=node.right           
+        return res
+  **后序
+      def postorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        if not root:
+            return 
+        res =[]
+        stack=[]
+        node = root
+        while len(stack)>0 or node:
+            while node:
+                res.append(node.val)
+                stack.append(node)
+                node = node.right
+            node = stack.pop()
+            node= node.left
+        return res[::-1]
+		
 由中序 + 另外一种遍历方式 重建二叉树
 二叉树层序遍历 换行打印 & z字形打印
 二叉树的镜像  递归&非递归
@@ -128,7 +205,55 @@ def maxdepth(root):
 	return res
 		
 二叉搜索树的最近公共祖先
+##递归##
+ def lowestCommonAncestor(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """
+        if not root:
+            return 
+        if root == p:
+            return p
+        if root == q:
+            return q
+        if p.val<root.val and q.val < root.val:
+            return self.lowestCommonAncestor(root.left,p,q)
+        if p.val > root.val and q.val >root.val:
+            return self.lowestCommonAncestor(root.right,p,q)
+        else:
+            return root
+### 非递归####
+    def lowestCommonAncestor(self, root, p, q)：
+        if not root:
+            return 
+        if root == p:
+            return p
+        if root == q:
+            return q
+        while root:
+            if p.val<root.val and q.val < root.val:
+                root = root.left
+            elif p.val > root.val and q.val >root.val:
+                root = root.right
+            else:
+                return root
 二叉树的最近公共祖先
+### 递归 ###
+    def lowestCommonAncestor(self, root, p, q):
+        if not root or p== root or q==root:
+            return root
+        left = self.lowestCommonAncestor(root.left,p,q)
+        right = self.lowestCommonAncestor(root.right,p,q)
+        if left and right:
+            return root
+        elif left:
+            return left
+        elif right:
+            return right
+            
 
 
 DP：
@@ -179,8 +304,13 @@ DP：
 数塔问题（三角形 从上往下的最小路径和）  dp[i][j] = min(dp[i-1][j-1],dp[i-1][j])+nums[i][j]  注意边界  也可以用自底向上法 就是遍历要反过来
 零钱兑换 （有一个目标值，一个arr ，arr里的coin可以使用任意多
           次，求凑成目标值的方法数）设零钱有n种，目标值为amount  dp：（n）x amount+1）
-					dp[i][j] = max(dp[i-1][j],dp[i][j-coins[i-1])  (j>=coins[i])
-					dp[i][j] = dp[i-1][j] (j<coins[i])
+		  len(coins)=0 or amount =0 的条件注意一下
+			for i in range(1,n):
+			    for j in range(1,amount+1):
+				if j>=coins[i]:
+				    dp[i][j] = dp[i-1][j]+dp[i][j-coins[i-1]]
+				else:
+					dp[i][j] = dp[i-1][j]					
 
 链表：
 两两交换链表中结点 
@@ -189,16 +319,17 @@ DP：
         :type head: ListNode
         :rtype: ListNode
         """
-        if not head or not head.next:
+        if not head:
+            return 
+        
+         
+        if  head.next:
+            tmp = head.next
+            head.next = self.swapPairs(tmp.next)
+            tmp.next = head
+            return tmp
+        else:
             return head
-        
-        tmp = ListNode(-999)
-        tmp = head.next
-        head.next = self.swapPairs(tmp.next)
-        tmp.next = head
-        
-        return tmp
-        
 
 找到链表中环的入口  （hash表 / O(1)) 
 
@@ -232,6 +363,62 @@ def reverse(head):
 		head = q
 	return p
 两个链表的第一个公共结点
+  ### 双指针 
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+        if not headA or not headB:
+            return 
+        pa = headA
+        pb = headB
+        
+        while pa!=pb:
+            if pa:
+                pa = pa.next
+            else:
+                pa = headB
+            if pb:
+                pb = pb.next
+            else:
+                pb = headA
+        return pa
+	
+    ### 计算长度法
+      def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        
+        """
+        if not headA or not headB:
+            return 
+        a = headA
+        b = headB
+        n = 0
+        m = 0
+        while a:
+            a = a.next
+            n = n+1
+        while b:
+            b = b.next
+            m = m+1
+        a = headA
+        b = headB
+        while a or b:
+            if a == b:
+                return a
+            if n ==m:
+                a=a.next
+                b = b.next
+            elif n>m:
+                a=a.next
+                n -=1
+            else:
+                b = b.next
+                m -=1
+        return 
 
 删除链表中的重复元素，使得每个元素只出现一次
     def deleteDuplicates(head):
@@ -293,12 +480,105 @@ def delete(head):
             head.next = self.Merge(pHead1,pHead2.next)
         return head
 链表的倒数第k个结点
+    def FindKthToTail(self, head, k):
+        # write code here
+        if not head:
+            return
+        if k==0:
+            return 
+        low  =head
+        fast = head
+        i = 0
+        while i<k-1:
+            if fast.next:
+                fast=fast.next
+                i = i+1
+            else:
+                return 
+        while fast.next:
+            low = low.next
+            fast = fast.next
+        return low
+删除倒数第N个结点
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        
+        if not head:
+            return 
+        
+        low = head
+        fast = head
+        i = 0
+        while i<n-1:
+            if fast.next:
+                fast = fast.next
+                i +=1
+        if fast.next:
+            while fast.next.next:
+                fast = fast.next
+                low = low.next
+            low.next = low.next.next
+            return head
+        else: ## 说明 fast已经走到最后一个结点了 那就是要删去第一个结点
+            return head.next
+        
 
 
 双/三指针：
 三数之和
 荷兰国旗问题
-链表的倒数第k个结点
+
+def f(arr):
+
+
+    cur = 0
+    low = 0
+    hi = len(arr)-1
+    while cur<= hi:
+        if  arr[cur] == 0 and cur == low:
+            cur += 1
+            low +=1
+        elif arr[cur] == 0 and low<cur:
+            tmp = arr[cur]
+            arr[cur] =arr[low]
+            arr[low] = tmp
+            low += 1
+            cur +=1
+        elif arr[cur] ==1 :
+            cur +=1
+        elif arr[cur] == 2:
+            tmp = arr[cur]
+            arr[cur] = arr[hi]
+            arr[hi] = tmp
+            hi -=1
+    print(arr)
+
+有效三角形的个数：
+    def triangleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 
+        n = len(nums)
+        nums.sort()     
+        res=0
+        for i in range(n-1,1,-1):
+            k = 0
+            j = i-1
+            while k<j:
+                if nums[k] + nums[j] > nums[i]:
+                    res += j-k
+                    j = j-1
+                else:
+                    k +=1
+        return res
+
 
 排序：
 每种的最好最坏情况的复杂度（quick sort and merge sort and heap sort
