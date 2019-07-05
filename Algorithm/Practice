@@ -446,24 +446,32 @@ def reverse(head):
 			
 		
 删除重复元素，使其不出现
-def delete(head):
-	if not head:
-		return 
-	p = listNond(-99999)
-	pre = p
-	cur = head
-	flag =True
-	while cur:
-		while cur.next and cur.val == cur.next.val:
-			flag = True
-			cur= cur.next
-		if flag == True:
-			pre.next = cur.next
-		else:
-			pre = cur
-		cur = cur.next
-	return p.next
-		
+class Solution(object):
+    def deleteDuplicates(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head:
+            return 
+        p = ListNode(-99999)
+        p.next = head
+        pre = p
+        cur = head
+     
+        while cur:
+            flag=False
+            while cur.next and cur.val == cur.next.val:
+                flag =True
+                cur = cur.next
+            if flag == True:
+                pre.next = cur.next
+                
+            else:
+                pre = cur
+            cur = cur.next
+        return p.next
+    
 合并两个有序链表
 #### 递归 ###  非递归的话类似于 归并排序的那部分 
     def Merge(self, pHead1, pHead2):
