@@ -1,5 +1,4 @@
-# Informal record of every step towards dream XD
-I am a small transparency
+# Informal record 
 
 start! 
 
@@ -8,18 +7,9 @@ start!
 
 Including:
 
-leetcode （algorithm and data structure???  maybe 
+leetcode 
 
 machine learning
 
-deep learning
 
-probability and statistics
-
-paper reading
-.....
-
-&
-
-some mood trash XD
 
