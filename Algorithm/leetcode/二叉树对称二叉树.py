@@ -54,4 +54,23 @@ class Solution_(object):
             stack.append(node1.right)
             stack.append(node2.left)
         return True
-            
+# 非递归    
+class Solution__:
+    def isSymmetrical(self, root):
+        # write code here
+        if not root:
+            return True
+        q =[root,root]
+        while q:
+            node1,node2 = q.pop(0),q.pop(0)
+            if node1 and node2:
+                if node1.val == node2.val:
+                    q.append(node1.left)
+                    q.append(node2.right)
+                    q.append(node1.right)
+                    q.append(node2.left)
+                else:
+                    return False
+            if (not node1 and node2 ) or (not node2 and node1):
+                return False
+        return True

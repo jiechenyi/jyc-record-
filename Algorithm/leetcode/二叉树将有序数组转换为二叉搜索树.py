@@ -31,7 +31,7 @@ class Solution(object):
         return root
 
 
-## 法2
+## 法2 
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):

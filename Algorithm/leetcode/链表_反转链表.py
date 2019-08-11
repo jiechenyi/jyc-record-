@@ -36,8 +36,18 @@ class Solution_(object):
         """
         if not head or not head.next:
             return head
-        p = self.reverseList(head.next)
-        head.next.next = head
+        p = self.reverseList(head.next) # head.next 已经reverse 好了
+        head.next.next = head # 只需将 head 和 head.next 之间的箭头反向
         head.next=None
         return p
+        
+def f(head):
+    
+    p = None
+    while head:
+        tmp = head.next
+        head.next = p
+        p = head
+        head = tmp
+    return p
         

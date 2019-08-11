@@ -44,7 +44,7 @@ class Solution(object):
 前序遍历
 """
 ### 递归 
-class Solution(object):
+class Solution_(object):
     def preorderTraversal(self, root):
         """
         :type root: TreeNode
@@ -62,7 +62,7 @@ class Solution(object):
         self.help(res,root.right)
         return res
 ## 非递归
-class Solution(object):
+class Solution__(object):
     def preorderTraversal(self, root):
         """
         :type root: TreeNode
@@ -71,12 +71,12 @@ class Solution(object):
         if not root:
             return 
         node = root
-        stack=[root]
+        stack=[]
         res=[]
         while stack or node:
             while node:
-                res.append(node.val)
                 stack.append(node)
+                res.append(node.val)                
                 node = node.left
             node=stack.pop()
             node = node.right
@@ -147,3 +147,4 @@ class Solution(object):
             node = node.left
         return res[::-1]
     
+

@@ -1,6 +1,6 @@
 
 """
-将0 移到数组的最后，切不改变数组中数字原有的顺序
+将0 移到数组的最后，且不改变数组中数字原有的顺序
 """
 
 ## 我的解法
@@ -34,7 +34,7 @@ class Solution(object):
 
 ## 法2
 
-class Solution(object):
+class Solution_(object):
     def moveZeroes(self, nums):
         """
         :type nums: List[int]

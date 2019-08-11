@@ -18,12 +18,12 @@ class Solution(object):
         p = head
         while p:
             if p.next:
-                if p.val == p.next.val:
-                    p.next=p.next.next
+                if p.val == p.next.val: # 如果当前结点的值和下一个结点的值相同，
+                    p.next=p.next.next # 
                 else:
-                    p = p.next
+                    p = p.next # 如果不相同，p继续前进
             else:
-                p = p.next
+                p = p.next # p = None 结束
         return head
 
 

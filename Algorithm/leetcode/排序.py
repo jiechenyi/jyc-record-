@@ -1,8 +1,4 @@
-def swap(a,b):
-       
-        tmp = a
-        a = b
-        b = tmp
+
 
 class sort(object):
 
