@@ -10,24 +10,33 @@ class ListNode(object):
         self.next = None
 class Solution(object):
     def rotateRight(self,head,k):
-        if not head:
-            return
-        for i in range(k):
-            head = self.help(head)
-        return head
-
-    def help(self,head):
-        if not head:
-            return
-
+        if not head or not head.next:
+            return head
+        n = 1
         p = head
-        while p.next.next :
+        while p.next:
             p = p.next
-        tmp = p.next
+            n += 1
+        m = n - k % n - 1 # 需要前进的步数
 
-        tmp.next = head
-        p.next  = None
-        return head
+        p.next = head
+        q = head
+        while m > 0:
+            q = q.next
+            m -= 1
+        tmp = q.next
+        q.next = None
+        return tmp
+
+
+l =[1,2,3,4,5]
+head = ListNode(l[0])
+for i in range(1,len(l)):
+    head.next = ListNode(l[i])
+s = Solution()
+s.rotateRight(head,2)
+
+
 
 
 

@@ -1,524 +1,337 @@
-def bs(arr,k):
-    left = 0
-    right = len(arr)
-    
-    while left <= right:
-        mid = (left+right) //2
-        if arr[mid] == k:
-            return mid
-        elif arr[mid]<k:
-            left = mid+1
-        else :
-            right = mid-1
-        return 
-    
-        
-def bs2(arr,k,left,right):
-    if left <=right:
-        mid = (left + right)//2
-        if arr[mid] == k:
-            return mid
-        if arr[mid] <k:
-            return bs2(arr,k,mid+1,right)
-        if arr[mid] >k:
-            return bs2(arr,k,left,mid-1)
+# 新浪笔试
+b= [1,2,4,3,2,1]
+n =len(b)
+cnt=0
+tmp =[]
+while b:
+    min_num = min(b)
+    index = b.index(min_num)
+    if min_num not in tmp:
+        tmp.append(min_num)
+        b.pop(index)
+    else:
+        b[index] +=1
+        cnt +=1
 
 
+# BFS
 
+graph = {
+    "A": ["B","C"],
+    "B": ["A","C","D"],
+    "C": ["A","B","D","E"],
+    "D": ["B","C","E", "F"],
+    "E": ["C","D"],
+    "F": ["D"]
+ }
 
-def inorder(root):
+def BFS(graph,start):
+    queque =[]
+    queque.append(start)
 
-    stack=[]
-    node = root
-    res= []
-    while stack or node:
-        while node:
-            stack.append(node)
-            node = node.left
-        node = stack.pop()
-        res.append(node.val)
-        node = node.right
+    res =[]
+
+    seen=set()
+    seen.add(start)
+    while queque:
+        node = queque.pop(0)
+        res.append(node)
+        for p in graph[node]:
+            if p not in seen:
+                queque.append(p)
+                seen.add(p)
+
 
     return res
 
-def postorder(root):
-    stack =[]
-    node = root
+
+# DFS
+def DFS(graph,start):
+    stack = []
+    stack.append(start)
+
     res =[]
-    while stack or node:
-        while node:
-            stack.append(node)
-            res.append(node.val)
-            node = node.right
+    seen = set()
+    seen.add(start)
+
+    while stack:
         node = stack.pop()
-        node = node.left
-    return res[::-1]
+
+        res.append(node)
+
+        for p in graph[node]:
+            if p not in seen:
+                seen.add(p)
+                stack.append(p)
+
+    return res
+
+# Dijkstra(based on bfs)
 
 
-def lowest(root,p,q):
-    if not root:
-        return 
-    if not p or q.val == root.val:
-        return q
-    if not q or p.val == root.val:
-        return p
-    while root:
-        if q.val < root.val and p.val < root.val:
-            root = root.left
-        if q.val > root.val and p.val > root.val:
-            root = root.left
+import heapq # python 自带的 优先队列
+import math
+graph = {
+    "A": {"B":5,"C":1},
+    "B": {"A":5,"C":2,"D":1},
+    "C": {"A":1,"B":2,"D":4,"E":8},
+    "D": {"B":1,"C":4,"E":3, "F":6},
+    "E": {"C":8,"D":3},
+    "F": {"D":6}
+ }
+
+def dijkstra(graph,start):
+
+    pqueque = []
+    heapq.heappush(pqueque,(0,start))
+
+    seen = set()
+    seen.add(start)
+
+    distance = {}
+    for node in graph:
+        distance[node] = math.inf
+    distance[start] = 0
+    while pqueque:
+        pair = heapq.heappop(pqueque)
+        dist = pair[0]
+        node = pair[1]
+        seen.add(node)
+
+        for p in graph[node]:
+            if p not in seen:
+                d = dist + graph[node][p]
+                if d < distance[p]:
+                    heapq.heappush(pqueque,(d,p))
+                    distance[p] = d
+    return distance
+
+
+
+
+
+# 招行笔试 编程第一题
+s="RRLRL"
+def f(s):
+    n = len(s)
+    res=[0]*n
+    i = 0
+
+
+    while i < n: # 对于第i个字母
+        step= 0
+        if s[i] =="R":
+            for m in range(i+1,n):# 从第i个开始 找到第一个不一样的
+                if s[m] != s[i]:
+                    break
+                else:
+                    step +=1
+            if step == 0:
+
+                res[i] +=1
+            elif step % 2 ==0:
+                res[m-1] +=1
+            elif step%2 != 0:
+                res[m] +=1
         else:
-            return root
+            for m in range(i-1,-1,-1):
+                if s[m]!= s[i]:
+                    break
+                else:
+                    step+=1
+            if step == 0:
+                res[i] +=1
 
-def mergetree(root1,root2):
-    if not root1:
-        return root2
-    if not root2:
-        return root1
-    root1.val =root1.val + root2.val
-    root1.left = mergetree(root1.left,root2.left)
-    root1.right = mergetree(root1.right,root2.right)
-    return root1
+            elif step%2 == 0:
+                res[m+1] +=1
+            elif step % 2 != 0:
+                res[m] +=1
+        i +=1
+    print(res)
 
-def issymmetric(root):
-    if not root:
-        return True
-    stack=[root,root]
-    while stack:
-        node1 = stack.pop(0)
-        node2 = stack.pop(0)
 
-        if not node1 and not node2:
-            continue
-        if not node1 or not node2:
-            return False
-        if node1.val != node2.val:
-            return False
-        stack.append(node1.left)
-        stack.append(node2.right)
-        stack.append(node1.right)
-        stack.append(node2.left)
-    return True
 
-def isbalance(root):
-    left = maxdepth(root.left)
-    right = maxdepth(root.right)
-    if abs(left-right) >1:
-        return False
 
+s='2??'
+def qumo(s):
+    n = len(s)
+    min_num = int(s.replace("?","0"))
+    max_num = int(s.replace("?","9"))
+    cnt = 0
+
+    for nu in range(min_num,max_num+1):
+        if nu %13 == 5:
+            cnt +=1
+    print(cnt%(10**9+7))
+
+
+# heap sort 复习
+
+# 调整堆
+
+def heapify(arr,n,i):
+    if n>i:
+        c1 = 2*i +1
+        c2 = 2*i +2
+
+        max_index = i
+
+        if c1 < n and arr[c1] > arr[max_index]:
+            max_index = c1
+        if c2 < n and arr[c2] > arr[max_index]:
+            max_index = c2
+        if max_index != i:
+            tmp = arr[i]
+            arr[i] = arr [max_index]
+            arr[max_index] = tmp
+            heapify(arr,n,max_index)
+        return arr
     else:
-        return True and isbalance(root.left) and isbalance(root.right)
+        return
 
-def maxdepth(root):
-    stack=[(1,root)]
-    node =root
-    maxd = 1
-    while stack:
-        cur,node = stack.pop()
-        if node.left:
-            
-            stack.append((cur+1,node.left))
-            maxd = max(maxd,cur+1)
-        if node.right:
-            stack.append((cur+1,node.right))
-            maxd = max(maxd,cur+1)
-    return maxd
+# 构建堆
+def build_heap(arr,n):
 
-def lo(root,p,q):
-    if not p :
-        return q
-    if not p:
-        return q
-    if p.val == root.val:
-        return root
-    if q.val == root.val:
-        return root
+    last = (n-1-1)//2
 
-    left =lo(root.left,p,q)
-    right = lo(root.right,p,q)
-
-    if left and right:
-        return root
-    if left :
-        return left
-    if right:
-        return right 
-            
-def invert(root):
-    if not root:
-        return 
-    tmp = root.left
-    root.left = invert(root.right)
-    root.right = invert(tmp)  
-    return root      
-def invert2(root):
-    if not root:
-        return 
-    
-    stack=[root]
-    while stack:
-        node = stack.pop(0)
-        if node:
-            tmp = node.left
-            node.left = node.right
-            node.right = tmp
-            stack.append(node.left)
-            stack.append(node.right)
-    return root
-
-def movezero(arr):
-    n= len(arr)
-    pre = 0
-    cur =1
-    while pre<cur and cur<n:
-        if arr[pre] != 0 and arr[cur] !=0:
-            pre +=1
-            cur +=1
-        elif arr[pre] != 0 and arr[cur] == 0:
-            pre +=1
-
-            cur +=1
-        elif arr[pre] == 0 and arr[cur] == 0:
-            cur +=1
-        elif arr[pre] ==0 and arr[cur] !=0:
-            tmp = arr[pre]
-            arr[pre] = arr[cur]
-            arr[cur] = tmp
-            pre +=1
-            cur +=1
+    for i in range(last,-1,-1):
+        heapify(arr,n,i)
     return arr
 
-def swap(head):
 
-    if head.next:
-        tmp = head.next
-        head.next = swap(head.next.next)
-        tmp.next = head
-        return tmp
-    else:
-        return head
+# 堆排序
 
-def reverse(head):
-    p=None
-    while head:
-        tmp = head.next
-        head.next = p
-        p= head
-        head  = tmp
-    return p
-
-def reverse2(head):
-
-    if not head or not head.next:
-        return head
-
-    p = reverse2(head.next) #
-    head.next.next = head
-    head.next = None
-    return p
-
-
-    def merge(head1,head2):
-        if not head1:
-            return head2
-        if not head2:
-            return head1
-        
-        head = ListNode(-999999)
-        p = head
-
-        while head1 or head2:
-            if head1.val < head2.val:
-                p.next = head1
-                head1 = head1.next
-            else:
-                p.next = head2
-                head2 = head2.next
-        while head1:
-            p.next = head1
-            head1 = head1.next
-        while head2:
-            p.next = head2
-            head2 = head2.next
-        return head.next
-
-def merge2(head1,head2):
-    head = ListNode(-99999)
-    if head1.val < head2.val:
-        head = head1
-        head.next = merge(head1.next,head2)
-    else:
-        head=head2
-        head.next = merge(head1,head2.next)
-    return head
-
-
-def quicksort(arr,left,right):
-    if left < right:
-        start = left
-        end = right
-        key = arr[start]
-
-        while start<end:
-            while start<end and arr[end] > key:
-                end -=1
-            if start<end:
-                arr[start] = arr[end]
-                start +=1
-            while start < end and arr[start]< key:
-                start +=1
-            if start < end:
-                arr[end] = arr[start]
-                end -=1
-        arr[start] = key
-        quicksort(arr,left,end-1)
-        quicksort(arr,end+1,right)
-
-def maxsum(arr):
-    if not arr:
-        return 0
-    n  =len(arr)
-    dp1=[0]*n
-
-    # 如果第一个数字用到的话
-    dp1[0] =arr[0]
-    for i in range(2,n-1):
-        dp1[i] = max(dp1[i-2]+arr[i],dp1[i-1])
-
-    dp2=[0]*n
-    # 如果第一个数字不用的话
-    for i in range(1,n):
-        dp2[i] = max(dp2[i-2]+arr[i],dp2[i-1])
-    return max(max(dp1),max(dp2))    
-
-
-
-
-def bs____(arr,key,left,right):
-    if left > right:
-        return
-    
-    mid = (left+right)//2
-
-    if arr[mid] == key:
-        return mid
-    elif arr[mid] < key:
-        return bs(arr,key,mid+1,right)
-    elif arr[mid]>key:
-        return bs(arr,key,left,mid-1)
-def f__(arr):
+def heap_sort(arr):
     n = len(arr)
+    build_heap(arr,n)
 
-    dp=[0]*n
-    minp=9999
-    for i in range(1,n):
-        if arr[i-1] < minp:
-            minp = arr[i-1]
-        dp[i] = arr[i] - minp
-    return max(dp)
+    for i in range(n-1,-1,-1):
+        tmp = arr[0]
+        arr[0] = arr[i]
+        arr[i] = tmp
 
-def maxdepth(root):
-
-    if not root:
-        return 0
-    stack=[[1,root]]
-    res=0
-    while stack:
-        depth,node = stack.pop()
-        if node.right:
-            stack.append([depth+1,node.right])
-        if node.left:
-            stack.append([depth+1,node.left])
-        res = max(depth.res)
-    return res
+        build_heap(arr,i)
+    return arr
 
 
-def preorder(root):
-    if not root:
-        return 
-    stack=[]
-    res=[]
-    node= root
-    while stack or node:
-        while node:
-            res.append(node.val)
-            stack.append(node)
-            node = node.left
-        node = stack.pop()
-        node=node.right
+# 归并排序
 
-    return res
+def merge(arr,l,m,r):
+    left_size  = m-l+1
+    right_size = r-m
+    left = []
+    right  =[]
+    i = l
+    while i <= m:
+        left.append(arr[i])
+        i+=1
+    j = m+1
+    while j <=r:
+        right.append(arr[j])
+        j+=1
+    i = 0
+    j = 0
+    k = l
 
-
-def inorder(root):
-    if not root:
-        return 
-    stack=[]
-    res=[]
-    node = root
-    while node or stack:
-        while node:
-            stack.append(node)
-            node = node.left
-        node = stack.pop()
-        res.append(node.val)
-        node =node.right
-    return res
-
-def postorder(root):
-    # 根右左
-    if not root:
-        return 
-    stack=[]
-    res=[]
-    node = root
-    while stack or node:
-        while node:
-            res.append(node.val)
-            stack.append(node)
-            node = node.right
-        node = stack.pop()
-        node = node.left
-    return res[::-1]
-
-
-def reverse(root):
-    if not root:
-        return 
-    tmp = root.left
-    root.left = reverse(root.right)
-    root.right = reverse(tmp)
-    return root
-
-def reverse2(root):
-    q =[root]
-    while q:
-        node = q.pop(0)
-        if node:
-            tmp = node.left
-
-            node.left = node.right
-            node.right = tmp
-            q.append(node.left)
-            q.append(node.right)
-    return root
-
-def delete(head):
-
-   p = ListNode(-9999)
-   p.next = head
-   pre = p
-   cur = head
-   while cur:
-       flag = False
-       while cur.next and cur.val == cur.next.val:
-           flag =True
-           cur =cur.next
-        if flag ==True:
-            pre.next = cur.next
+    while i<left_size and j < right_size :
+        if left[i] >= right[j]:
+            arr[k] = right[j]
+            k +=1
+            j +=1
         else:
-            pre=cur
-        cur = cur.next
-    retur p.next
+            arr[k] = left[i]
+            i +=1
+            k +=1
 
-def quicksort(arr.left,right):
-    if left < right:
-        start = left
-        end = right
-        key = arr[start]
+    while i < left_size:
+        arr[k] = left[i]
+        i +=1
+        k +=1
+    while j < right_size:
+        arr[k] = right[j]
+        j +=1
+        k +=1
 
-        while start < end
-            while start < end and arr[end]>key:
-                end = end-1
-            if start<end:
-                arr[start] = arr[end]
-                start +=1
-            while start < end and arr[start] < key:
-                start = start+1
-            if start < end:
-                arr[end] = arr[start]
-            arr[start] = key
-            quicksort(arr.left.start-1)
-            quicksort(arr,start+1,right)
-            return arr
-def mergesort(arr):
-    if len(arr)<=1:
-        return arr
-    i  = len(arr)//2
+    return arr
 
-    left = mergesort(arr[:i])
-    right = mergesort(arr[i:])
-    return merge(left,right)
+def merge_sort(arr,l,r):
+    if l<r:
+        m = (l+r) //2
+        merge_sort(arr,l,m)
+        merge_sort(arr,m+1,r)
+        return merge(arr,l,m,r)
+
+arr =[1,5,3,2,7,5,8,9]
+
+l = 0
+r = len(arr)-1
 
 
+# 全排列
+# 递归
 
+arr=[1,2,3]
+def printArray(arr,n):
+    for i in range(n):
+        print(arr[i])
+    print("\n")
+def savetolist(res,arr):
+    res.append(arr)
 
+def permutation(arr,l,r,res):
 
-### 面试 
-arr=[1,200,10,120,30,8,88,4]
-class ListNode(object):
-    def __init__(self,val):
-        self.val = val
-        self.next = None
-head =ListNode(arr[0])
-def build(arr):
-    for i in range(1,len(arr)):
-        tmp = ListNode(arr[i])
-        head.next = tmp
-    return head
-
-def f(head):
-    res1= head
-    res2=head.next
-    head = head.next
-    flag = 0
-    while head:
-        if head.next and flag ==0:
-            res1.next = head
-            head = head.next
-            flag =1
-        if head.next and flag == 1:
-            res2.next = head
-            head = head.next
-            flag =0
-    return res1,res2
-
-def reverse(head):
-    p = None
-    
-    while head:
-        tmp = head.next
-        head.next = p
-        
-        p = head
-        head = tmp
-    return p
-
-def merge(head1,head2):
-    
-    head = ListNode(-9999)
-    
-    p = head
-    
-    while head1 and head2:
-        if head1.val < head2.val :
-            p.next =head1
-            head1 = head1.next
-            p = p.next
-        else:
-            p.next = head2
-            p = p.next
-            head2 = head2.next
-    if head1:
-        p.next = head1
+    if l == r:
+        savetolist(res,arr)
     else:
-        p.next = head2
-    return head.next
-print(build(arr))
-#res1,res2=f(head)
-#res2 = reverse(res2)
-#res = merge(res1,res2)
-    
-            
-         
-        
+        for i in range(l,r+1,1):
+            # // swap(arr,0,i)
+            tmp = arr[l]
+            arr[l] = arr[i]
+            arr[i] = tmp
+            permutation(arr,l+1,r,res)
+            # swap(arr,0,i)
+            tmp = arr[l]
+            arr[l] = arr[i]
+            arr[i] = tmp
+def main(arr):
+    res=[]
+    permutation(arr,0,len(arr)-1,res)
+    print(res)
+
+main(arr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
