@@ -6,9 +6,15 @@
 """
 
 # 堆化
+"""
 
+     4        6
+    / \  --> / \ 
+   5   6    5   4
 
-def heapify(tree,n,i):
+"""
+
+def heapify(tree,n,i):  # n 是数组长度，i是需要调节的结点位置
     if n < i:
         return
 
@@ -16,6 +22,7 @@ def heapify(tree,n,i):
     c2 = 2*i +2
     max_index = i
 
+    #  和子结点中 最大的那个数进行交换
     if c1<n and tree[c1] > tree[max_index]:
         max_index= c1
     if c2<n and tree[c2] > tree[max_index]:
@@ -80,4 +87,6 @@ def heap_sort(tree):
 
 tree=[4,10,3,5,1,2,6]
 print(heap_sort(tree))
+
+
 

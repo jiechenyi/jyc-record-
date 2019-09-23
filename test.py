@@ -298,7 +298,188 @@ def main(arr):
     permutation(arr,0,len(arr)-1,res)
     print(res)
 
-main(arr)
+
+# 网易 第1题
+# max（最大值的一半，和的1/3）
+
+def eat(x):
+    total = sum(x)
+    max_num = max(x)
+
+
+    if total % 3==0:
+        print(total/3)
+    else:
+        print(int(total/3)+1)
+x = [1,2,7]
+print(eat(x))
+
+
+
+
+# 第二题
+
+def f(h,m,n):
+    m = m+ h[0] # 将第一堆变成0
+    tmp =[]
+    tmp.append(0)
+
+    for i in range(1,n):
+        if h[i] == i:
+            tmp.append(i)
+            continue
+        elif h[i] > i:
+            m = m+ h[i] -i
+            tmp.append(i)
+
+        elif h[i] < i:
+            if m >= (i-h[i]):
+                m = m -(i-h[i])
+                tmp.append(i)
+
+            else:
+                return False
+    return True
+
+h =[2,2,3,3,1]
+m = 3
+n = 5
+
+
+
+
+# 第四题
+
+def get_smallsum(arr):
+
+    if not arr or len(arr) < 2:
+        return 0
+    return smallsum(arr,0,len(arr)-1)
+
+def smallsum(arr,l,r):
+    if l ==r :
+        return 0
+    mid = (l+r) >>1
+
+    left = smallsum(arr,l,mid)
+    right = smallsum(arr,mid+1,r)
+
+    all = merge(arr,l,mid,r)
+
+    return left + right +all
+
+
+def merge(arr,l,mid,r):
+    left = l
+    right = mid +1
+    res = []
+
+    sum = 0
+
+
+    while left <= mid and right <= r:
+
+        if arr[left] <= arr[right]:
+            res.append(arr[left])
+
+            sum += arr[left] * (r-right +1)
+
+            left +=1
+        else:
+            res.append(arr[right])
+            right +=1
+    res += arr[left:mid+1]
+    res += arr[right:r+1]
+
+    for i in range(l,r+1):
+        arr[i] = res.pop(0)
+    return sum
+
+
+# print(get_smallsum(arr[::-1]))
+
+
+# 第三题
+def f(h,n,k):
+
+    i = 0
+    flag = True
+    while i <n:
+        next = i
+        next_h = 0
+        tmp = h[i+1:i+1+k]
+        for j,num in enumerate(tmp):
+            if num > h[i]:
+                break
+            elif num<h[i]:
+                if num >= next_h:
+                    next_h = num
+                    next = i+j+1
+        if next == i and flag ==True:
+            next = i+k
+            flag = False
+        elif next ==i and flag ==False:
+            return "NO"
+
+        i = next
+    return 'YES'
+
+n = 5
+k = 3
+h = [6,2,4,3,8]
+
+
+
+
+def binarysearch(arr,k):
+    left,right = 0,len(arr)
+    mid = (left + right )/2
+
+    while left <= right:
+        if arr[mid] == k:
+            return mid
+        if arr[mid] < k:
+            left = mid+1
+
+        else:
+            right = mid -1
+    return
+
+
+def get_point(f,x,y):
+
+    mid = (x+y) /2
+    while x <= y :
+         if f(mid) == 0 :
+             return mid
+         if f(mid) > 0:
+             y = mid
+         elif f(mid) < 0:
+             x = mid
+    return
+
+
+
+a = [1,1,2,2,3,4,4,5,5,6,6]
+n = len(a)
+res =0
+for i in range(n):
+    res = res ^ a[i]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
