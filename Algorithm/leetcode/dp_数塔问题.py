@@ -14,5 +14,4 @@ def f(arr):
                 dp[i][j] = dp[i-1][j-1]+arr[i][j]
             else:
                 dp[i][j] = min(dp[i-1][j-1]+arr[i][j],dp[i-1][j]+arr[i][j])
-    return min(dp[-1])           
-            
+    return min(dp[-1])

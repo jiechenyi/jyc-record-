@@ -103,5 +103,32 @@ print(a.mergesort([2,4,5,3,1]))
 
 
 
+def quick(arr,left,right):
+    if left < right:
+        start = left
+        end = right
+        pivot = arr[start]
+
+        while start < end:
+            while start < end and arr[end] > pivot:
+                end -= 1
+            if start<end:
+                arr[start] = arr[end]
+                start +=1
+            while start < end and  arr[start] < pivot:
+                start +=1
+            if start < end :
+                arr[end] = arr[start]
+                end -=1
+        arr[start] = pivot
+        quick(arr,left,start-1)
+        quick(arr,start+1,end)
+    return arr
+
+arr =[2,5,1,4,6]
+
+print(quick(arr,0,len(arr)-1))
+
+
                 
 

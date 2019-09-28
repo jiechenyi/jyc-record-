@@ -52,7 +52,7 @@ def lenLongestFibSubseq(A):
             sum = A[left] + A[right]
             if sum == A[i]:
 
-                dp[right][i] = max(dp[right][i], dp[left][right]+1) # 在原本 left->right 的基础上 加了一个 i，所以是 dp[left][right] +1 
+                dp[right][i] = max(dp[right][i], dp[left][right]+1) # 在原本 left->right 的基础上 加了一个 i，所以是 dp[left][right] +1
                 res = max(dp[right][i], res)
 
                 right -= 1
@@ -66,6 +66,30 @@ def lenLongestFibSubseq(A):
 A = [1,2,3,4,5,6,7,8]
 print(lenLongestFibSubseq(A))
 
+
+def maxlen(arr):
+    if not arr:
+        return
+
+    n = len(arr)
+    res=0
+    dp = [[2]*n for _ in range(n)]
+    for i in range(1,n):
+        left = 0
+        right = i-1
+        while left < right:
+            sum = arr[left] + arr[right]
+
+            if sum == arr[i]:
+                dp[right][i] = max(dp[right][i],dp[left][right]+1)
+                res = max(dp[right][i],res)
+                right -=1
+                left +=1
+            elif sum < arr[i]:
+                left +=1
+            else:
+                right -=1
+    return res
 
 
 

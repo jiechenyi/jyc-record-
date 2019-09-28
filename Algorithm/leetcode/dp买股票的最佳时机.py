@@ -25,4 +25,15 @@ class Solution(object):
                 minp = prices[i-1]
             dp[i] = prices[i] - minp
         return max(dp)
-        
+
+
+
+def maxp(prices):
+    n = len(prices)
+    dp = [0]*n
+    minp = prices[0]
+    for i in range(1,n):
+        if prices[i-1] < minp:
+            minp = prices[i-1]  # 找到i 之前 最小的价格
+        dp[i] = prices[i] - minp
+    return max(dp)

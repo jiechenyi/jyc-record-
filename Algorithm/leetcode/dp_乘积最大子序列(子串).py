@@ -17,3 +17,20 @@ class MaxMultiply(object):
         return max(maxp)
 
 
+
+def maxmultiply(arr):
+
+    if not arr:
+        return
+    n = len(arr)
+
+    maxp =arr[:]
+
+    minp = arr[:]
+
+    for i in range(1,n):
+        minp[i] = min(maxp[i-1]*arr[i],minp[i-1]*arr[i],arr[i])
+        maxp[i] = max(maxp[i-1]*arr[i],minp[i-1]*arr[i],arr[i])
+    return max(maxp)
+
+

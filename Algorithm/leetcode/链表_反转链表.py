@@ -41,13 +41,19 @@ class Solution_(object):
         head.next=None
         return p
         
+
+
+
+
+
+
 def f(head):
-    
+    if not head:
+        return
     p = None
     while head:
-        tmp = head.next
-        head.next = p
+        tmp=  head.next
+        head.next= p
         p = head
         head = tmp
     return p
-        

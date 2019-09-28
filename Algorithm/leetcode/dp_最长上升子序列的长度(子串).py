@@ -27,4 +27,15 @@ class Solution(object):
                 dp[i] = max(dp[i-1]+1,1)
         return max(dp)
 
+
+def maxlen(arr):
+    if not arr:
+        return
+    n = len(arr)
+    dp = [1]*n
+    for i in range(1,n):
+        for j in range(i-1,-1,-1):
+            if arr[i]> arr[j]:
+                dp[i]  = max(dp[i],dp[j]+1)
+    return max(dp)
         
