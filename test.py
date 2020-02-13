@@ -472,35 +472,30 @@ for i in range(n):
 
 
 
+def quick_sort(arr,left,right):
+    if left >= right:
+        return
+    start = left
 
+    end = right
 
+    key = arr[start]
+    while start<end:
+        while start <end and arr[end] > key:
+            end -=1
+        if start <end :
+            arr[start] = arr[end]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            start +=1
+        while start <end and arr[start] < key:
+            start +=1
+        if start <end :
+            arr[end] = arr[start]
+            end -=1
+    arr[start] = key
+    quick_sort(arr,left,start-1)
+    quick_sort(arr,start+1,right)
+    return arr
 
 
 

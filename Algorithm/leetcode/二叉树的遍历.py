@@ -97,6 +97,7 @@ class Solution(object):
         stack=[]
         res=[]
         node=root
+
         while stack or node:
             while node:
                 stack.append(node)
@@ -148,3 +149,24 @@ class Solution(object):
         return res[::-1]
     
 
+
+
+
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        res = []
+        queue = []  # 数组模拟栈
+        last_visit = root
+        while root or queue:
+            while root:
+                queue.insert(0, root)
+                root = root.left
+            root = queue[0]
+            if root.right is None or root.right == last_visit:
+                res.append(root.val)
+                queue.pop(0)
+                last_visit = root
+                root = None
+            else:
+                root = root.right
+        return res
